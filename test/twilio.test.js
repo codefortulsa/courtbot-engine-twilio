@@ -23,7 +23,9 @@ describe("twilio", () => {
     });
     log4js = {
       getLogger: sandbox.stub().returns({
-        info: infoStub
+        info: infoStub,
+        debug: sandbox.stub(),
+        error: sandbox.stub()
       })
     };
     twilio.TwimlResponse = sandbox.stub();
