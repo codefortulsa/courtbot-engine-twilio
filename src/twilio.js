@@ -12,14 +12,18 @@ export function sendMessage(msg, res) {
 }
 
 export function sendNonReplyMessage(phone, message, opt) {
-  log4js.getLogger("twilio-non-respose").info("Sending non reply message.", {message, phone, from: opt.twilioPhone});
+  const logger = log4js.getLogger("twilio-non-respose");
+  logger.info("Sending non reply message.", {message, phone, from: opt.twilioPhone});
   return new Promise(function(resolve, reject) {
     var client = twilio(opt.twilioAccount, opt.twilioToken);
+    logger.debug("twilio client initialized", client);
     client.sendMessage({to: phone, from: opt.twilioPhone, body: message}, function(err) {
       if(err) {
+        logger.error("Error sending message:", err);
         reject(err);
         return;
       }
+      logger.info("Twilio message sent successfully");
       resolve();
     });
   });
