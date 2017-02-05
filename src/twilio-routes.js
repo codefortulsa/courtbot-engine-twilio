@@ -26,7 +26,7 @@ export default function(name, options) {
 
   emitter.on("send-non-reply", (data) => {
     if(data.communicationType === communicationType) {
-      sendNonReplyMessage(data.to, data.msg, options);
+      data.result.promises.push(sendNonReplyMessage(data.to, data.msg, options));
     }
   });
 }
