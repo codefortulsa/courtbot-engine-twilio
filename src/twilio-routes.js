@@ -24,9 +24,9 @@ export default function(name, options) {
     });
   });
 
-  emitter.on("send-non-reply", ({to, msg, msgCommunicationType}) => {
-    if(msgCommunicationType === communicationType) {
-      sendNonReplyMessage(to, msg, options);
+  emitter.on("send-non-reply", (data) => {
+    if(data.communicationType === communicationType) {
+      sendNonReplyMessage(data.to, data.msg, options);
     }
   });
 }
