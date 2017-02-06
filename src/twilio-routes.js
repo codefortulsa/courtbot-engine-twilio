@@ -1,7 +1,7 @@
 import log4js from "log4js";
 import { sendMessage, sendNonReplyMessage } from "./twilio";
 import {events as emitter} from "courtbot-engine";
-import CourtbotConversation from "courtbot-engine";
+import {CourtbotConversation} from "courtbot-engine";
 
 export default function(name, options) {
   const communicationType = "sms" + (name || "");
