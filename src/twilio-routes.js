@@ -1,7 +1,7 @@
 import log4js from "log4js";
 import { sendMessage, sendNonReplyMessage } from "./twilio";
 import {events as emitter} from "courtbot-engine";
-import CourtbotConversation from "courtbot-engine";
+import {CourtbotConversation} from "courtbot-engine";
 
 export default function(name, options) {
   const communicationType = "sms" + (name || "");
@@ -24,9 +24,9 @@ export default function(name, options) {
     });
   });
 
-  emitter.on("send-non-reply", ({to, msg, msgCommunicationType}) => {
-    if(msgCommunicationType === communicationType) {
-      sendNonReplyMessage(to, msg, options);
+  emitter.on("send-non-reply", (data) => {
+    if(data.communicationType === communicationType) {
+      data.result.promises.push(sendNonReplyMessage(data.to, data.msg, options));
     }
   });
 }
