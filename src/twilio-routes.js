@@ -1,5 +1,5 @@
 import log4js from "log4js";
-import { sendMessage, sendNonReplyMessage } from "./twilio";
+import { sendMessage, sendNonReplyMessage, verifyNumber } from "./twilio";
 import {events as emitter} from "courtbot-engine";
 import {CourtbotConversation} from "courtbot-engine";
 
@@ -27,6 +27,12 @@ export default function(name, options) {
   emitter.on("send-non-reply", (data) => {
     if(data.communicationType === communicationType) {
       data.result.promises.push(sendNonReplyMessage(data.to, data.msg, options));
+    }
+  });
+
+  emitter.on("verify-contact", (data) => {
+    if(data.communicationType === communicationType) {
+      data.result.promises.push(verifyNumber(data.contact, options));
     }
   });
 }

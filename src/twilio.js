@@ -28,3 +28,15 @@ export function sendNonReplyMessage(phone, message, opt) {
     });
   });
 }
+
+export function verifyNumber(number, opt) {
+  const logger = log4js.getLogger("twilio-verify-number");
+  logger.info("verifying number", number);
+  return new Promise(function(resolve, reject) {
+    var client = new twilio.LookupsClient(opt.twilioAccount, opt.twilioToken);
+    client.phoneNumbers(number).get((error, number) => {
+      if(error)reject(error);
+      resolve(number.phone_number);
+    })
+  });
+}
