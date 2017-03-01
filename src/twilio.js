@@ -15,7 +15,7 @@ export function sendNonReplyMessage(phone, message, opt) {
   const logger = log4js.getLogger("twilio-non-respose");
   logger.info("Sending non reply message.", {message, phone, from: opt.twilioPhone});
   return new Promise(function(resolve, reject) {
-    var client = twilio(opt.twilioAccount, opt.twilioToken);
+    var client = twilio(opt.twilioAccount, opt.twilioToken, process.env.TWILIO_API_HOST || "api.twilio.com");
     logger.debug("twilio client initialized", client);
     client.sendMessage({to: phone, from: opt.twilioPhone, body: message}, function(err) {
       if(err) {
