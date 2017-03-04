@@ -15,8 +15,11 @@ export function sendNonReplyMessage(phone, message, opt) {
   const logger = log4js.getLogger("twilio-non-respose");
   logger.info("Sending non reply message.", {message, phone, from: opt.twilioPhone});
   return new Promise(function(resolve, reject) {
-    var client = twilio(opt.twilioAccount, opt.twilioToken, process.env.TWILIO_API_HOST || "api.twilio.com");
-    logger.debug("twilio client initialized", client);
+    var client = twilio(opt.twilioAccount, opt.twilioToken);
+    if(process.env.TWILIO_API_HOST) {
+      //override for testing!
+      client.getBaseUrl = () => process.env.TWILIO_API_HOST;
+    }
     client.sendMessage({to: phone, from: opt.twilioPhone, body: message}, function(err) {
       if(err) {
         logger.error("Error sending message:", err);
@@ -31,9 +34,13 @@ export function sendNonReplyMessage(phone, message, opt) {
 
 export function verifyNumber(number, opt) {
   const logger = log4js.getLogger("twilio-verify-number");
-  logger.info("verifying number", number);
+  logger.info("verifying number", number, "using host", process.env.TWILIO_LOOKUPS_HOST || "lookups.twilio.com");
   return new Promise(function(resolve, reject) {
     var client = new twilio.LookupsClient(opt.twilioAccount, opt.twilioToken);
+    if(process.env.TWILIO_LOOKUPS_HOST) {
+      //override for testing!
+      client.getBaseUrl = () => process.env.TWILIO_LOOKUPS_HOST;
+    }
     client.phoneNumbers(number).get((error, number) => {
       if(error)reject(error);
       resolve(number.phone_number);
