@@ -1,6 +1,6 @@
 {
   "name": "courtbot-engine-twilio",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Twilio connections for courtbot-engine.",
   "main": "index.js",
   "scripts": {
